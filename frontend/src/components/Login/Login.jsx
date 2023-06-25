@@ -3,11 +3,13 @@ import { SigninSchema } from "../../schemas/SigninSchema.js";
 import React, { /*useEffect, useRef,*/ useState } from "react";
 import { imgSrc } from "./img.js";
 import "./Login.css";
-import { apiRoutes } from "../../routes.js";
-//import { Link } from "react-router-dom";
+import { apiRoutes, appPaths } from "../../routes.js";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
+import { useAuth } from "../../hooks";
 
-//react-react-bootstrap
+//react-bootstrap
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
@@ -18,12 +20,17 @@ import Form from "react-bootstrap/Form";
 
 const Login = () => {
   const [authFailed, setAuthFailed] = useState(false);
+  const { t } = useTranslation();
+  const { logIn } = useAuth();
+  const navigate = useNavigate();
 
   const onSubmit = async (values) => {
     setAuthFailed(false);
     try {
       console.log(values);
       const { data } = await axios.post(apiRoutes.login(), values);
+      logIn(data);
+      navigate(appPaths.chat);
       console.log(data);
     } catch (err) {
       if (err.isAxiosError && err.response.status === 401) {
@@ -46,7 +53,7 @@ const Login = () => {
               <Col className="col-form">
                 <Formik
                   initialValues={{ username: "", password: "" }}
-                  validationSchema={SigninSchema}
+                  validationSchema={SigninSchema(t("errors.required"))}
                   className="w-100"
                   onSubmit={onSubmit}
                 >
@@ -57,12 +64,17 @@ const Login = () => {
                     handleChange,
                     handleSubmit,
                   }) => {
+                    const isInvalidUsername =
+                      touched.username && errors.username;
+                    const isInvalidPassword =
+                      touched.password && errors.password;
+
                     return (
                       <Form
                         onSubmit={handleSubmit}
                         className="col-12 col-md-11 mt-3 mt-mb-0"
                       >
-                        <h1>Войти</h1>
+                        <h1>{t("entry")}</h1>
                         <Form.Group md="11">
                           <Form.Label htmlFor="username"></Form.Label>
                           <Form.Control
@@ -71,9 +83,9 @@ const Login = () => {
                             name="username"
                             value={values.username}
                             onChange={handleChange}
-                            isInvalid={authFailed}
+                            isInvalid={authFailed || isInvalidUsername}
                             id="username"
-                            placeholder="Ваш ник"
+                            placeholder={t("placeholders.yourNickname")}
                           />
                           {errors.username && touched.username ? (
                             <Form.Control.Feedback type="invalid">
@@ -89,9 +101,9 @@ const Login = () => {
                             name="password"
                             value={values.password}
                             onChange={handleChange}
-                            isInvalid={authFailed}
+                            isInvalid={authFailed || isInvalidPassword}
                             id="password"
-                            placeholder="Пароль"
+                            placeholder={t("placeholders.password")}
                           />
                           {errors.password && touched.password ? (
                             <Form.Control.Feedback type="invalid">
@@ -105,7 +117,7 @@ const Login = () => {
                             className="Login-button mt-3"
                             type="submit"
                           >
-                            Войти
+                            {t("entry")}
                           </Button>
                         </div>
                       </Form>
@@ -115,10 +127,10 @@ const Login = () => {
               </Col>
             </Row>
             <Card.Footer className="p-4">
-              Нет аккаунта?
-              <a href="../login" className="footer-link">
-                Регистрация
-              </a>
+              {t("noAccount")}{" "}
+              <Link to={appPaths.signUp} className="footer-link">
+                {t("makeRegistration")}
+              </Link>
             </Card.Footer>
           </Card>
         </div>
