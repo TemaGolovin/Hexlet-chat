@@ -21,3 +21,8 @@ export const SigninSchema = (message) =>
     username: yup.string().trim().required(message),
     password: yup.string().trim().required(message),
   });
+
+export const messageShema = (message) =>
+  yup.object().shape({
+    messageText: yup.string().trim().required(message),
+  });
