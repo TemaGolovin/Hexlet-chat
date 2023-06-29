@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import { SigninSchema } from "../../schemas/SigninSchema.js";
+import { SigninSchema } from "../../schemas/schemas.js";
 import React, { /*useEffect, useRef,*/ useState } from "react";
 import { imgSrc } from "./img.js";
 import "./Login.css";
