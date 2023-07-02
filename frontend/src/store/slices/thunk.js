@@ -4,7 +4,6 @@ import { apiRoutes } from "../../routes.js";
 
 const fetchAllData = async (headers) => {
   const { data } = await axios.get(apiRoutes.data(), headers);
-  console.log(data);
   return data;
 };
 
