@@ -10,4 +10,5 @@ export const appPaths = {
 export const apiRoutes = {
   login: () => [apiPath, "login"].join("/"),
   data: () => [apiPath, "data"].join("/"),
+  signUp: () => [apiPath, "signup"].join("/"),
 };
