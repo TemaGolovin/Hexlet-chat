@@ -1,37 +1,36 @@
 import { Formik } from "formik";
 import { SigninSchema } from "../../schemas/schemas.js";
-import React, { /*useEffect, useRef,*/ useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { imgSrc } from "./img.js";
-import "./Login.css";
 import { apiRoutes, appPaths } from "../../routes.js";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../hooks";
 
-//react-bootstrap
-import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
-import Row from "react-bootstrap/Row";
-import Form from "react-bootstrap/Form";
-//import { Nav } from "react-bootstrap";
-//import Spinner from "react-bootstrap/Spinner";
+import {
+  Container,
+  Form,
+  Row,
+  Card,
+  Col,
+  Button,
+  Image,
+} from "react-bootstrap";
 
 const Login = () => {
   const [authFailed, setAuthFailed] = useState(false);
   const { t } = useTranslation();
   const { logIn } = useAuth();
   const navigate = useNavigate();
+  const ref = useRef(null);
 
   const onSubmit = async (values) => {
     setAuthFailed(false);
     try {
-      console.log(values);
       const { data } = await axios.post(apiRoutes.login(), values);
       logIn(data);
       navigate(appPaths.chat);
-      console.log(data);
     } catch (err) {
       if (err.isAxiosError && err.response.status === 401) {
         setAuthFailed(true);
@@ -41,14 +40,18 @@ const Login = () => {
     }
   };
 
+  useEffect(() => {
+    ref.current.focus();
+  });
+
   return (
-    <div className="container-fluid h-100">
-      <div className="row justify-content-center align-content-center h-100">
-        <div className="col-12 col-md-8 col-xxl-6">
-          <Card className="text-center Login-card shadow-sm">
+    <Container fluid className="h-100 ">
+      <Row className="row justify-content-center align-items-center h-100">
+        <Col className="col-12 col-md-8 col-xxl-6">
+          <Card className="text-center Login-card shadow">
             <Row>
               <Col className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                <img className="img" src={imgSrc} alt="login" />
+                <Image width={350} height={350} src={imgSrc} alt="login" />
               </Col>
               <Col className="col-form">
                 <Formik
@@ -86,8 +89,9 @@ const Login = () => {
                             isInvalid={authFailed || isInvalidUsername}
                             id="username"
                             placeholder={t("placeholders.yourNickname")}
+                            ref={ref}
                           />
-                          {errors.username && touched.username ? (
+                          {isInvalidUsername ? (
                             <Form.Control.Feedback type="invalid">
                               {errors.username}
                             </Form.Control.Feedback>
@@ -105,13 +109,18 @@ const Login = () => {
                             id="password"
                             placeholder={t("placeholders.password")}
                           />
-                          {errors.password && touched.password ? (
+                          {isInvalidPassword ? (
                             <Form.Control.Feedback type="invalid">
                               {errors.password}
                             </Form.Control.Feedback>
                           ) : null}
+                          {authFailed ? (
+                            <Form.Control.Feedback type="invalid">
+                              {t("invalidFeedback")}
+                            </Form.Control.Feedback>
+                          ) : null}
                         </Form.Group>
-                        <div className="d-grid gap-2">
+                        <div className="d-grid gap-2 mb-4">
                           <Button
                             variant="outline-primary"
                             className="Login-button mt-3"
@@ -133,9 +142,9 @@ const Login = () => {
               </Link>
             </Card.Footer>
           </Card>
-        </div>
-      </div>
-    </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
