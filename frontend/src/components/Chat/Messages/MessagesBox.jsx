@@ -2,7 +2,7 @@ import { Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
-import Message from "./Messages";
+import Messages from "./Messages.jsx";
 import MessageInput from "./MessageInput.jsx";
 
 import { selectors as channelsSelectors } from "../../../store/slices/channelsSlice";
@@ -26,7 +26,7 @@ const MessagesBox = () => {
         </div>
         <div className="chat-messages overflow-auto px-5">
           {currentMessages.map((message) => {
-            <Message key={message.id} message={message} />;
+            return <Messages key={message.id} message={message} />;
           })}
         </div>
         <MessageInput />

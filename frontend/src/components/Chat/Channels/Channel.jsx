@@ -1,8 +1,24 @@
 import { Button, ButtonGroup, Dropdown, Nav } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { actions as channelsActions } from "../../../store/slices/channelsSlice.js";
+import { actions as modalsActions } from "../../../store/slices/modalsSlice.js";
 
 const Channel = ({ isActive, channel }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  const switchHandler = () => {
+    dispatch(channelsActions.switchChannel({ id: channel.id }));
+  };
+
+  const hendlerRename = () => {
+    dispatch(modalsActions.open({ type: "renaming", targetId: channel.id }));
+  };
+
+  const hendlerRemove = () => {
+    dispatch(modalsActions.open({ type: "removing", targetId: channel.id }));
+  };
 
   return (
     <Nav.Item className="w-100">
@@ -11,8 +27,9 @@ const Channel = ({ isActive, channel }) => {
           <Button
             className="w-100 rounded-0 text-start text-truncate"
             variant={isActive ? "secondary" : null}
+            onClick={switchHandler}
           >
-            <span>#</span>
+            <span>#</span> {channel.name}
           </Button>
 
           <Dropdown.Toggle
@@ -25,14 +42,19 @@ const Channel = ({ isActive, channel }) => {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <Dropdown.Item>{t("modal.rename")}</Dropdown.Item>
-            <Dropdown.Item>{t("modal.remove")}</Dropdown.Item>
+            <Dropdown.Item onClick={hendlerRename}>
+              {t("modal.rename")}
+            </Dropdown.Item>
+            <Dropdown.Item onClick={hendlerRemove}>
+              {t("modal.remove")}
+            </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       ) : (
         <Button
           className="w-100 rounded-0 text-start"
           variant={isActive ? "secondary" : null}
+          onClick={switchHandler}
         >
           <span>#</span> {channel.name}
         </Button>

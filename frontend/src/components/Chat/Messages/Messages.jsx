@@ -1,4 +1,4 @@
-const Message = ({ message }) => {
+const Messages = ({ message }) => {
   return (
     <div className="text-break mb-2">
       <b>{message.user}</b>
@@ -8,4 +8,4 @@ const Message = ({ message }) => {
   );
 };
 
-export default Message;
+export default Messages;

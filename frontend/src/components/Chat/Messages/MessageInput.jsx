@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { useAuth, useSocket } from "../../../hooks";
 
 import { selectors as channelsSelectors } from "../../../store/slices/channelsSlice";
 import { messageShema } from "../../../schemas/schemas.js";
@@ -14,6 +15,8 @@ const MessageForm = () => {
     channelsSelectors.selectCurrentChannelId
   );
   const inputMessage = useRef(null);
+  const auth = useAuth();
+  const socket = useSocket();
 
   const formik = useFormik({
     initialValues: { messageText: "" },
@@ -21,7 +24,13 @@ const MessageForm = () => {
     validationSchema: messageShema(t("messageCannotEmpty")),
 
     onSubmit: async (values, { resetForm }) => {
-      console.log(values);
+      const message = {
+        body: values.messageText,
+        channelId: currentChannelId,
+        user: auth.user.username,
+      };
+      await socket.sendMessage(message);
+
       resetForm();
     },
   });
