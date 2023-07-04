@@ -22,6 +22,12 @@ export default {
     errors: {
       required: "Обязательное поле",
       invalidFeedback: "Неверные имя пользователя или пароль",
+      network: "Ошибка соединения",
+      userExist: "Пользователь уже существует",
+      message: "Ошибка добавления сообщения",
+      channelAdd: "Ошибка добавления канала",
+      channelRemove: "Ошибка удаления канала",
+      channelRename: "Ошибка переименования канала",
     },
     messagesCounter: {
       messages: "нет сообщений",
@@ -43,6 +49,11 @@ export default {
       name: "От 3 до 20 символов",
       password: "Не менее 6 символов",
       passwordEquality: "Пароли должны совпадать",
+    },
+    success: {
+      newChannel: "Канал создан",
+      renameChannel: "Канал переименован",
+      removeChannel: "Канал удалён",
     },
   },
 };
