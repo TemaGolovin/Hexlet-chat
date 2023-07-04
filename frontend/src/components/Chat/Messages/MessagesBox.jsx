@@ -1,6 +1,7 @@
 import { Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { useWordFilter } from "../../../hooks";
 
 import Messages from "./Messages.jsx";
 import MessageInput from "./MessageInput.jsx";
@@ -12,13 +13,15 @@ const MessagesBox = () => {
   const { t } = useTranslation();
   const currentChannel = useSelector(channelsSelectors.selectCurrentChannel);
   const currentMessages = useSelector(messagesSelectors.selectById);
+  const filterProfanity = useWordFilter();
+  const channelName = filterProfanity(currentChannel?.name);
 
   return (
     <Col className="p-0 h-100">
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
           <p className="m-0">
-            <b># {currentChannel?.name}</b>
+            <b># {channelName}</b>
           </p>
           <span className="text-muted">
             {t("messagesCounter.messages", { count: currentMessages.length })}

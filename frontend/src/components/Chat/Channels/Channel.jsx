@@ -3,10 +3,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { actions as channelsActions } from "../../../store/slices/channelsSlice.js";
 import { actions as modalsActions } from "../../../store/slices/modalsSlice.js";
+import { useWordFilter } from "../../../hooks";
 
 const Channel = ({ isActive, channel }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const filterProfanity = useWordFilter();
+  const channelName = filterProfanity(channel.name);
 
   const switchHandler = () => {
     dispatch(channelsActions.switchChannel({ id: channel.id }));
@@ -29,7 +32,7 @@ const Channel = ({ isActive, channel }) => {
             variant={isActive ? "secondary" : null}
             onClick={switchHandler}
           >
-            <span>#</span> {channel.name}
+            <span>#</span> {channelName}
           </Button>
 
           <Dropdown.Toggle
@@ -56,7 +59,7 @@ const Channel = ({ isActive, channel }) => {
           variant={isActive ? "secondary" : null}
           onClick={switchHandler}
         >
-          <span>#</span> {channel.name}
+          <span>#</span> {channelName}
         </Button>
       )}
     </Nav.Item>
