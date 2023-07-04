@@ -17,6 +17,8 @@ import { apiRoutes, appPaths } from "../../routes.js";
 import { useAuth } from "../../hooks/index.js";
 import { useNavigate } from "react-router-dom";
 import { SignupSchema } from "../../schemas/schemas.js";
+import { toast } from "react-toastify";
+import { useRollbar } from "@rollbar/react";
 
 const SignUp = () => {
   const { t } = useTranslation();
@@ -24,6 +26,7 @@ const SignUp = () => {
   const { logIn } = useAuth();
   const navigate = useNavigate();
   const inputName = useRef(null);
+  const rollbar = useRollbar();
 
   const formik = useFormik({
     initialValues: {
@@ -50,11 +53,12 @@ const SignUp = () => {
         navigate(appPaths.chat);
       } catch (error) {
         if (error.code === "ERR_NETWORK") {
-          console.error(t("errors.network"));
+          toast.error(t("errors.network"));
         }
         if (error.response.status === 409) {
-          console.error(error);
+          setRegError(true);
         }
+        rollbar.error("signUp", error);
       }
     },
   });
@@ -90,80 +94,82 @@ const SignUp = () => {
               </Col>
               <Col className="col-form d-flex flex-column align-items-center justify-content-center">
                 <Form onSubmit={formik.handleSubmit} className="w-75">
-                  <Form.Floating className="mb-4 align-self-center">
-                    <Form.Control
-                      required
-                      type="text"
-                      name="username"
-                      id="username"
-                      placeholder={t("placeholders.username")}
-                      onChange={formik.handleChange}
-                      value={formik.values.username}
-                      isInvalid={regError || isInvalidUsername}
-                      ref={inputName}
-                      isValid={
-                        formik.touched.username && !formik.errors.username
-                      }
-                    />
-                    <Form.Label htmlFor="name">
-                      {t("placeholders.username")}
-                    </Form.Label>
-                    <Form.Control.Feedback type="invalid">
-                      {formik.errors.username}
-                    </Form.Control.Feedback>
-                  </Form.Floating>
-                  <Form.Floating className="mb-4">
-                    <Form.Control
-                      required
-                      type="password"
-                      name="password"
-                      id="password"
-                      placeholder={t("placeholders.password")}
-                      onChange={formik.handleChange}
-                      value={formik.values.password}
-                      isInvalid={regError || isInvalidPassword}
-                      isValid={
-                        formik.touched.password && !formik.errors.password
-                      }
-                    />
-                    <Form.Label htmlFor="password">
-                      {t("placeholders.password")}
-                    </Form.Label>
-                    <Form.Control.Feedback type="invalid">
-                      {formik.errors.password}
-                    </Form.Control.Feedback>
-                  </Form.Floating>
-                  <Form.Floating className="mb-4">
-                    <Form.Control
-                      required
-                      type="password"
-                      name="confirmPassword"
-                      id="confirmPassword"
-                      placeholder={t("placeholders.confirmPassword")}
-                      onChange={formik.handleChange}
-                      value={formik.values.confirmPassword}
-                      isInvalid={regError || isInvalidConfirmPassword}
-                      isValid={
-                        formik.touched.confirmPassword &&
-                        !formik.errors.confirmPassword
-                      }
-                    />
-                    <Form.Label htmlFor="confirmPassword">
-                      {t("placeholders.confirmPassword")}
-                    </Form.Label>
-                    <Form.Control.Feedback type="invalid">
-                      {formik.errors.confirmPassword}
-                    </Form.Control.Feedback>
-                  </Form.Floating>
-                  <div className="d-grid">
-                    <Button
-                      type="submit"
-                      variant="outline-primary"
-                      className="mb-4"
-                    >
-                      {t("register")}
-                    </Button>
-                  </div>
+                  <fieldset disabled={formik.isSubmitting}>
+                    <Form.Floating className="mb-4 align-self-center">
+                      <Form.Control
+                        required
+                        type="text"
+                        name="username"
+                        id="username"
+                        placeholder={t("placeholders.username")}
+                        onChange={formik.handleChange}
+                        value={formik.values.username}
+                        isInvalid={regError || isInvalidUsername}
+                        ref={inputName}
+                        isValid={
+                          formik.touched.username && !formik.errors.username
+                        }
+                      />
+                      <Form.Label htmlFor="name">
+                        {t("placeholders.username")}
+                      </Form.Label>
+                      <Form.Control.Feedback type="invalid">
+                        {formik.errors.username}
+                      </Form.Control.Feedback>
+                    </Form.Floating>
+                    <Form.Floating className="mb-4">
+                      <Form.Control
+                        required
+                        type="password"
+                        name="password"
+                        id="password"
+                        placeholder={t("placeholders.password")}
+                        onChange={formik.handleChange}
+                        value={formik.values.password}
+                        isInvalid={regError || isInvalidPassword}
+                        isValid={
+                          formik.touched.password && !formik.errors.password
+                        }
+                      />
+                      <Form.Label htmlFor="password">
+                        {t("placeholders.password")}
+                      </Form.Label>
+                      <Form.Control.Feedback type="invalid">
+                        {formik.errors.password}
+                      </Form.Control.Feedback>
+                    </Form.Floating>
+                    <Form.Floating className="mb-4">
+                      <Form.Control
+                        required
+                        type="password"
+                        name="confirmPassword"
+                        id="confirmPassword"
+                        placeholder={t("placeholders.confirmPassword")}
+                        onChange={formik.handleChange}
+                        value={formik.values.confirmPassword}
+                        isInvalid={regError || isInvalidConfirmPassword}
+                        isValid={
+                          formik.touched.confirmPassword &&
+                          !formik.errors.confirmPassword
+                        }
+                      />
+                      <Form.Label htmlFor="confirmPassword">
+                        {t("placeholders.confirmPassword")}
+                      </Form.Label>
+                      <Form.Control.Feedback type="invalid">
+                        {formik.errors.confirmPassword || t("errors.userExist")}
+                      </Form.Control.Feedback>
+                    </Form.Floating>
+                    <div className="d-grid">
+                      <Button
+                        type="submit"
+                        variant="outline-primary"
+                        className="mb-4"
+                      >
+                        {t("register")}
+                      </Button>
+                    </div>
+                  </fieldset>
                 </Form>
               </Col>
             </Row>

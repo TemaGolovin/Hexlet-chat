@@ -7,6 +7,8 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../hooks";
+import { toast } from "react-toastify";
+import { useRollbar } from "@rollbar/react";
 
 import {
   Container,
@@ -24,6 +26,7 @@ const Login = () => {
   const { logIn } = useAuth();
   const navigate = useNavigate();
   const ref = useRef(null);
+  const rollbar = useRollbar();
 
   const onSubmit = async (values) => {
     setAuthFailed(false);
@@ -32,10 +35,15 @@ const Login = () => {
       logIn(data);
       navigate(appPaths.chat);
     } catch (err) {
-      if (err.isAxiosError && err.response.status === 401) {
-        setAuthFailed(true);
-        return;
+      if (err.isAxiosError) {
+        if (err.response.status === 401) {
+          setAuthFailed(true);
+        }
+        if (err.code === "ERR_NETWORK") {
+          toast.error(t("errors.network"));
+        }
       }
+      rollbar.error("Login", err);
       throw err;
     }
   };
