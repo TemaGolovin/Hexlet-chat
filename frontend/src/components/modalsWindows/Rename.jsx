@@ -8,6 +8,8 @@ import { useTranslation } from "react-i18next";
 import { useSocket } from "../../hooks";
 import { actions as modalsActions } from "../../store/slices/modalsSlice";
 import { useEffect, useRef } from "react";
+import { toast } from "react-toastify";
+import { useRollbar } from "@rollbar/react";
 
 const Rename = () => {
   const channels = useSelector(channelsSelectors.selectChannelsNames);
@@ -20,6 +22,7 @@ const Rename = () => {
   const channelName = useSelector((state) =>
     channelsSelectors.selectById(state, targetId)
   ).name;
+  const rollbar = useRollbar();
 
   useEffect(() => {
     if (inputRef.current) {
@@ -37,8 +40,14 @@ const Rename = () => {
       t("modal.lengthChannelName")
     ),
     onSubmit: async ({ body }) => {
-      await socket.renameChannel({ id: targetId, name: body });
-      dispatch(modalsActions.close());
+      try {
+        await socket.renameChannel({ id: targetId, name: body });
+        dispatch(modalsActions.close());
+        toast.success(t("success.renameChannel"));
+      } catch (error) {
+        toast.error(t("errors.channelRename"));
+        rollbar.error("renameChannel", error);
+      }
     },
   });
 

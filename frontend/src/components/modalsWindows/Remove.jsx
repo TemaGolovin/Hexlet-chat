@@ -4,10 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useSocket } from "../../hooks";
 import { actions as modalsActions } from "../../store/slices/modalsSlice";
+import { toast } from "react-toastify";
+import { useRollbar } from "@rollbar/react";
 
 const Remove = () => {
   const { isOpened, targetId } = useSelector((state) => state.modals);
-  const messages = useSelector((state) => state.messages);
+  const rollbar = useRollbar();
   const { t } = useTranslation();
   const socket = useSocket();
   const dispatch = useDispatch();
@@ -15,12 +17,19 @@ const Remove = () => {
 
   const handleClose = () => dispatch(modalsActions.close());
 
-  const hendleRemove = async () => {
+  const hendleRemove = async (event) => {
+    event.preventDefault();
     setIsSubmitting(true);
-    await socket.removeChannel(targetId);
-    dispatch(modalsActions.close());
-    setIsSubmitting(false);
-    console.log(messages);
+    try {
+      await socket.removeChannel(targetId);
+      dispatch(modalsActions.close());
+      toast.success(t("success.removeChannel"));
+      setIsSubmitting(false);
+    } catch (error) {
+      toast.error(t("errors.channelRemove"));
+      rollbar.error("renameChannel", error);
+      setIsSubmitting(false);
+    }
   };
 
   return (

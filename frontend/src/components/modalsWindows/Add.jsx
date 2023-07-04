@@ -8,6 +8,8 @@ import { useTranslation } from "react-i18next";
 import { useSocket } from "../../hooks";
 import { actions as modalsActions } from "../../store/slices/modalsSlice";
 import { useEffect, useRef } from "react";
+import { toast } from "react-toastify";
+import { useRollbar } from "@rollbar/react";
 
 const Add = () => {
   const channels = useSelector(channelsSelectors.selectChannelsNames);
@@ -16,6 +18,7 @@ const Add = () => {
   const socket = useSocket();
   const dispatch = useDispatch();
   const inputRef = useRef(null);
+  const rollbar = useRollbar();
 
   useEffect(() => {
     if (inputRef.current) {
@@ -33,8 +36,14 @@ const Add = () => {
       t("modal.lengthChannelName")
     ),
     onSubmit: async ({ body }) => {
-      await socket.addChannel({ name: body });
-      dispatch(modalsActions.close());
+      try {
+        await socket.addChannel({ name: body });
+        dispatch(modalsActions.close());
+        toast.success(t("success.newChannel"));
+      } catch (error) {
+        toast.error(t("errors.channelAdd"));
+        rollbar.error("AddChannel", error);
+      }
     },
   });
 
