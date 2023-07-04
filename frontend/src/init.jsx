@@ -8,6 +8,12 @@ import { Provider as StoreProvider } from "react-redux";
 import store from "./store";
 import SocketProvider from "./context/SocketProvider.jsx";
 import { io } from "socket.io-client";
+import WordFilterProvider from "./context/WordFilterProvider";
+import {
+  Provider as RollbarProvider,
+  ErrorBoundary as ErrorBoundaryProvider,
+} from "@rollbar/react";
+import rollbarConfig from "./configs/rollbarConfig";
 
 const init = async () => {
   const websocket = io();
@@ -15,15 +21,21 @@ const init = async () => {
 
   await i18n.use(initReactI18next).init({ resources, fallbackLng: "ru" });
   return (
-    <StoreProvider store={store}>
-      <SocketProvider socket={websocket}>
-        <AuthProvider>
-          <I18nextProvider i18n={i18n}>
-            <App />
-          </I18nextProvider>
-        </AuthProvider>
-      </SocketProvider>
-    </StoreProvider>
+    <RollbarProvider config={rollbarConfig}>
+      <ErrorBoundaryProvider>
+        <StoreProvider store={store}>
+          <SocketProvider socket={websocket}>
+            <AuthProvider>
+              <WordFilterProvider>
+                <I18nextProvider i18n={i18n}>
+                  <App />
+                </I18nextProvider>
+              </WordFilterProvider>
+            </AuthProvider>
+          </SocketProvider>
+        </StoreProvider>
+      </ErrorBoundaryProvider>
+    </RollbarProvider>
   );
 };
 
