@@ -5,6 +5,8 @@ import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useAuth, useSocket } from "../../../hooks";
+import { useRollbar } from "@rollbar/react";
+import { toast } from "react-toastify";
 
 import { selectors as channelsSelectors } from "../../../store/slices/channelsSlice";
 import { messageShema } from "../../../schemas/schemas.js";
@@ -17,6 +19,7 @@ const MessageForm = () => {
   const inputMessage = useRef(null);
   const auth = useAuth();
   const socket = useSocket();
+  const rollbar = useRollbar();
 
   const formik = useFormik({
     initialValues: { messageText: "" },
@@ -29,9 +32,13 @@ const MessageForm = () => {
         channelId: currentChannelId,
         user: auth.user.username,
       };
-      await socket.sendMessage(message);
-
-      resetForm();
+      try {
+        await socket.sendMessage(message);
+        resetForm();
+      } catch (error) {
+        toast.error(t("errors.message"));
+        rollbar.error("SendMessage", error);
+      }
     },
   });
 
