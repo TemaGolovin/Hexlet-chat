@@ -10,7 +10,7 @@ export default {
     messageCannotEmpty: "Сообщение не может быть пустым",
     cancel: "Отмена",
     send: "Отправить",
-    register: "Зарегестрироваться",
+    register: "Зарегистрироваться",
     exit: "Выход",
     name: "Hexlet Chat",
     loading: "Загрузка...",
@@ -23,7 +23,7 @@ export default {
       password: "Пароль",
       newMessage: "Введите сообщение",
       username: "Имя пользователя",
-      confirmPassword: "Подтвердить пароль",
+      confirmPassword: "Подтвердите пароль",
     },
     errors: {
       required: "Обязательное поле",
