@@ -1,6 +1,8 @@
 import ChannelsBox from "./Channels/ChannelsBox";
 import MessagesBox from "./Messages/MessagesBox";
 import { useSelector } from "react-redux";
+import Loading from "./Loading";
+import Error from "./Error";
 
 const statuses = {
   loading: "loading",
@@ -12,7 +14,7 @@ const ChatBox = () => {
   const loadingStatus = useSelector((state) => state.channels.loadingStatus);
   switch (loadingStatus) {
     case statuses.loading:
-      return <p>loading...</p>;
+      return <Loading />;
     case statuses.loaded:
       return (
         <>
@@ -21,7 +23,7 @@ const ChatBox = () => {
         </>
       );
     case statuses.loadError:
-      return <p>error</p>;
+      return <Error />;
     default:
       return <p>default</p>;
   }
