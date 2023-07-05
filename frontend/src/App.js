@@ -17,7 +17,7 @@ const DefaultRoute = ({ children }) => {
   return auth.user ? children : <Navigate to={appPaths.login} />;
 };
 
-function App() {
+const App = () => {
   return (
     <div className="d-flex flex-column h-100">
       <Header />
@@ -39,6 +39,6 @@ function App() {
       </BrowserRouter>
     </div>
   );
-}
+};
 
 export default App;
