@@ -86,8 +86,7 @@ const Login = () => {
                         className="col-12 col-md-11 mt-3 mt-mb-0"
                       >
                         <h1>{t("entry")}</h1>
-                        <Form.Group md="11">
-                          <Form.Label htmlFor="username"></Form.Label>
+                        <Form.Floating md="11" className="mb-2">
                           <Form.Control
                             required
                             type="text"
@@ -99,14 +98,16 @@ const Login = () => {
                             placeholder={t("placeholders.yourNickname")}
                             ref={ref}
                           />
+                          <Form.Label htmlFor="username">
+                            {t("placeholders.yourNickname")}
+                          </Form.Label>
                           {isInvalidUsername ? (
                             <Form.Control.Feedback type="invalid">
                               {errors.username}
                             </Form.Control.Feedback>
                           ) : null}
-                        </Form.Group>
-                        <Form.Group md="11">
-                          <Form.Label htmlFor="password"></Form.Label>
+                        </Form.Floating>
+                        <Form.Floating md="11">
                           <Form.Control
                             required
                             type="password"
@@ -117,6 +118,9 @@ const Login = () => {
                             id="password"
                             placeholder={t("placeholders.password")}
                           />
+                          <Form.Label htmlFor="password">
+                            {t("placeholders.password")}
+                          </Form.Label>
                           {isInvalidPassword ? (
                             <Form.Control.Feedback type="invalid">
                               {errors.password}
@@ -127,7 +131,7 @@ const Login = () => {
                               {t("invalidFeedback")}
                             </Form.Control.Feedback>
                           ) : null}
-                        </Form.Group>
+                        </Form.Floating>
                         <div className="d-grid gap-2 mb-4">
                           <Button
                             variant="outline-primary"
