@@ -18,6 +18,7 @@ export default {
     error: "Ошибка",
     update: "Обновить",
     reauthorization: "Переавторизоваться",
+    newMessage: "Новое сообщение",
     placeholders: {
       yourNickname: "Ваш ник",
       password: "Пароль",
