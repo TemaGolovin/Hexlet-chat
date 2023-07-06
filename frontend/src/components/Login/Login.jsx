@@ -1,7 +1,7 @@
 import { Formik } from "formik";
 import { SigninSchema } from "../../schemas/schemas.js";
 import React, { useEffect, useRef, useState } from "react";
-import { imgSrc } from "./img.js";
+import imgSrc from "./img.js";
 import { apiRoutes, appPaths } from "../../routes.js";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";

@@ -1,11 +1,13 @@
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import fetchDataThunk from "./thunk.js";
+/* eslint-disable no-param-reassign */
+
+import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import fetchDataThunk from './thunk.js';
 
 const statuses = {
-  notLoaded: "notLoaded",
-  loading: "loading",
-  loaded: "loaded",
-  loadError: "loadError",
+  notLoaded: 'notLoaded',
+  loading: 'loading',
+  loaded: 'loaded',
+  loadError: 'loadError',
 };
 
 const defaultChannelId = 1;
@@ -19,7 +21,7 @@ const initialState = channelsAdapter.getInitialState({
 });
 
 const channelsSlice = createSlice({
-  name: "channels",
+  name: 'channels',
   initialState,
   reducers: {
     addChannel: channelsAdapter.addOne,
@@ -33,10 +35,9 @@ const channelsSlice = createSlice({
     removeChannel: (state, { payload }) => {
       const removeChannelId = payload;
       const activeChannelId = state.currentChannelId;
-      state.currentChannelId =
-        removeChannelId === activeChannelId
-          ? defaultChannelId
-          : state.currentChannelId;
+      state.currentChannelId = removeChannelId === activeChannelId
+        ? defaultChannelId
+        : state.currentChannelId;
       channelsAdapter.removeOne(state, removeChannelId);
     },
   },

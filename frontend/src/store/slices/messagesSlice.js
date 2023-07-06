@@ -1,17 +1,21 @@
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import fetchDataThunk from "./thunk.js";
-import { createSelector } from "@reduxjs/toolkit";
+import {
+  createEntityAdapter,
+  createSlice,
+  createSelector,
+} from '@reduxjs/toolkit';
+import fetchDataThunk from './thunk.js';
+
 import {
   selectors as channelsSelectors,
   actions as channelsActions,
-} from "./channelsSlice.js";
+} from './channelsSlice.js';
 
 const messagesAdapter = createEntityAdapter();
 
 const initialState = messagesAdapter.getInitialState();
 
 const messagesSlice = createSlice({
-  name: "messages",
+  name: 'messages',
   initialState,
   reducers: {
     addMessage: messagesAdapter.addOne,
@@ -40,9 +44,8 @@ const customSelectors = {
   selectAll: selectors.selectAll,
   selectById: createSelector(
     [selectors.selectAll, channelsSelectors.selectCurrentChannelId],
-    (messages, currentChannelId) => {
-      return messages.filter(({ channelId }) => channelId === currentChannelId);
-    }
+    // eslint-disable-next-line max-len
+    (messages, currentChannelId) => messages.filter(({ channelId }) => channelId === currentChannelId),
   ),
 };
 

@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { img } from "./img.js";
+import img from "./img.js";
 import axios from "axios";
 import { apiRoutes, appPaths } from "../../routes.js";
 import { useAuth } from "../../hooks/index.js";
