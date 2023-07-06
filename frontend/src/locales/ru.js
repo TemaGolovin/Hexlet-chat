@@ -51,6 +51,7 @@ export default {
       remove: "Удалить",
       removeChannel: "Удалить канал",
       confirm: "Уверены?",
+      toggle: "Управление каналом",
     },
     regRules: {
       name: "От 3 до 20 символов",
