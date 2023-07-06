@@ -47,7 +47,7 @@ export default {
       unique: "Имя должно быть уникальным",
       lengthChannelName: "От 3 до 20 символов",
       channelName: "Имя канала",
-      rename: "Переиминовать",
+      rename: "Переименовать",
       remove: "Удалить",
       removeChannel: "Удалить канал",
       confirm: "Уверены?",
