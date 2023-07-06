@@ -4,7 +4,7 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/35de5d3c85c834285e76/maintainability)](https://codeclimate.com/github/TemaGolovin/frontend-project-12/maintainability)
 
----
+![linter-check](https://github.com/TemaGolovin/frontend-project-12/actions/workflows/linter-check.yml/badge.svg)
 
 ## Description
 
