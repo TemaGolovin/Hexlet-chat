@@ -1,20 +1,20 @@
-import { Button, Form, InputGroup } from "react-bootstrap";
-import { SendFill } from "react-bootstrap-icons";
-import { useFormik } from "formik";
-import { useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
-import { useAuth, useSocket } from "../../../hooks";
-import { useRollbar } from "@rollbar/react";
-import { toast } from "react-toastify";
+import { Button, Form, InputGroup } from 'react-bootstrap';
+import { SendFill } from 'react-bootstrap-icons';
+import { useFormik } from 'formik';
+import { useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { useRollbar } from '@rollbar/react';
+import { toast } from 'react-toastify';
 
-import { selectors as channelsSelectors } from "../../../store/slices/channelsSlice";
-import { messageShema } from "../../../schemas/schemas.js";
+import { useAuth, useSocket } from '../../../hooks';
+import { selectors as channelsSelectors } from '../../../store/slices/channelsSlice';
+import { messageShema } from '../../../schemas/schemas.js';
 
 const MessageForm = () => {
   const { t } = useTranslation();
   const currentChannelId = useSelector(
-    channelsSelectors.selectCurrentChannelId
+    channelsSelectors.selectCurrentChannelId,
   );
   const inputMessage = useRef(null);
   const auth = useAuth();
@@ -22,9 +22,9 @@ const MessageForm = () => {
   const rollbar = useRollbar();
 
   const formik = useFormik({
-    initialValues: { messageText: "" },
+    initialValues: { messageText: '' },
 
-    validationSchema: messageShema(t("messageCannotEmpty")),
+    validationSchema: messageShema(t('messageCannotEmpty')),
 
     onSubmit: async (values, { resetForm }) => {
       const message = {
@@ -36,8 +36,8 @@ const MessageForm = () => {
         await socket.sendMessage(message);
         resetForm();
       } catch (error) {
-        toast.error(t("errors.message"));
-        rollbar.error("SendMessage", error);
+        toast.error(t('errors.message'));
+        rollbar.error('SendMessage', error);
       }
     },
   });
@@ -49,7 +49,7 @@ const MessageForm = () => {
   }, [currentChannelId]);
 
   useEffect(() => {
-    if (formik.values.messageText === "") {
+    if (formik.values.messageText === '') {
       inputMessage.current.focus();
     }
   }, [formik.values.messageText]);
@@ -67,8 +67,8 @@ const MessageForm = () => {
             className="border-0 p-0 ps-2"
             name="messageText"
             type="text"
-            placeholder={t("placeholders.newMessage")}
-            aria-label={t("newMessage")}
+            placeholder={t('placeholders.newMessage')}
+            aria-label={t('newMessage')}
             disabled={formik.isSubmitting}
             onChange={formik.handleChange}
             value={formik.values.messageText}

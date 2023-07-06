@@ -1,4 +1,4 @@
-import { useWordFilter } from "../../../hooks";
+import { useWordFilter } from '../../../hooks';
 
 const Messages = ({ message }) => {
   const filterProfanity = useWordFilter();
@@ -6,7 +6,7 @@ const Messages = ({ message }) => {
   return (
     <div className="text-break mb-2">
       <b>{message.user}</b>
-      {": "}
+      {': '}
       {filterProfanity(message.body)}
     </div>
   );

@@ -1,5 +1,4 @@
-import { useFormik } from "formik";
-
+import { useFormik } from 'formik';
 import {
   Card,
   Form,
@@ -8,17 +7,17 @@ import {
   Col,
   Container,
   Image,
-} from "react-bootstrap";
-import { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import img from "./img.js";
-import axios from "axios";
-import { apiRoutes, appPaths } from "../../routes.js";
-import { useAuth } from "../../hooks/index.js";
-import { useNavigate } from "react-router-dom";
-import { SignupSchema } from "../../schemas/schemas.js";
-import { toast } from "react-toastify";
-import { useRollbar } from "@rollbar/react";
+} from 'react-bootstrap';
+import { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useRollbar } from '@rollbar/react';
+import img from './img.js';
+import { apiRoutes, appPaths } from '../../routes.js';
+import { useAuth } from '../../hooks/index.js';
+import { SignupSchema } from '../../schemas/schemas.js';
 
 const SignUp = () => {
   const { t } = useTranslation();
@@ -30,16 +29,16 @@ const SignUp = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: "",
-      password: "",
-      confirmPassword: "",
+      username: '',
+      password: '',
+      confirmPassword: '',
     },
 
     validationSchema: SignupSchema(
-      t("regRules.name"),
-      t("regRules.password"),
-      t("regRules.passwordEquality"),
-      t("errors.required")
+      t('regRules.name'),
+      t('regRules.password'),
+      t('regRules.passwordEquality'),
+      t('errors.required'),
     ),
 
     onSubmit: async ({ username, password }) => {
@@ -52,13 +51,13 @@ const SignUp = () => {
         logIn(data);
         navigate(appPaths.chat);
       } catch (error) {
-        if (error.code === "ERR_NETWORK") {
-          toast.error(t("errors.network"));
+        if (error.code === 'ERR_NETWORK') {
+          toast.error(t('errors.network'));
         }
         if (error.response.status === 409) {
           setRegError(true);
         }
-        rollbar.error("signUp", error);
+        rollbar.error('signUp', error);
       }
     },
   });
@@ -77,8 +76,7 @@ const SignUp = () => {
 
   const isInvalidUsername = formik.touched.username && formik.errors.username;
   const isInvalidPassword = formik.touched.password && formik.errors.password;
-  const isInvalidConfirmPassword =
-    formik.touched.confirmPassword && formik.errors.confirmPassword;
+  const isInvalidConfirmPassword = formik.touched.confirmPassword && formik.errors.confirmPassword;
 
   return (
     <Container fluid className="h-100">
@@ -86,11 +84,11 @@ const SignUp = () => {
         <Col className="col-12 col-md-8 col-xxl-6">
           <Card className="text-center Login-card shadow">
             <Card.Title className="mt-4">
-              <h1>{t("makeRegistration")}</h1>
+              <h1>{t('makeRegistration')}</h1>
             </Card.Title>
             <Row>
               <Col className="col-md-6 d-flex align-items-center justify-content-center">
-                <Image width={350} height={350} src={img} rounded></Image>
+                <Image width={350} height={350} src={img} rounded />
               </Col>
               <Col className="col-form d-flex flex-column align-items-center justify-content-center">
                 <Form onSubmit={formik.handleSubmit} className="w-75">
@@ -101,7 +99,7 @@ const SignUp = () => {
                         type="text"
                         name="username"
                         id="username"
-                        placeholder={t("placeholders.username")}
+                        placeholder={t('placeholders.username')}
                         onChange={formik.handleChange}
                         value={formik.values.username}
                         isInvalid={regError || isInvalidUsername}
@@ -111,7 +109,7 @@ const SignUp = () => {
                         }
                       />
                       <Form.Label htmlFor="name">
-                        {t("placeholders.username")}
+                        {t('placeholders.username')}
                       </Form.Label>
                       <Form.Control.Feedback type="invalid">
                         {formik.errors.username}
@@ -123,7 +121,7 @@ const SignUp = () => {
                         type="password"
                         name="password"
                         id="password"
-                        placeholder={t("placeholders.password")}
+                        placeholder={t('placeholders.password')}
                         onChange={formik.handleChange}
                         value={formik.values.password}
                         isInvalid={regError || isInvalidPassword}
@@ -132,7 +130,7 @@ const SignUp = () => {
                         }
                       />
                       <Form.Label htmlFor="password">
-                        {t("placeholders.password")}
+                        {t('placeholders.password')}
                       </Form.Label>
                       <Form.Control.Feedback type="invalid">
                         {formik.errors.password}
@@ -144,20 +142,19 @@ const SignUp = () => {
                         type="password"
                         name="confirmPassword"
                         id="confirmPassword"
-                        placeholder={t("placeholders.confirmPassword")}
+                        placeholder={t('placeholders.confirmPassword')}
                         onChange={formik.handleChange}
                         value={formik.values.confirmPassword}
                         isInvalid={regError || isInvalidConfirmPassword}
                         isValid={
-                          formik.touched.confirmPassword &&
-                          !formik.errors.confirmPassword
+                          formik.touched.confirmPassword && !formik.errors.confirmPassword
                         }
                       />
                       <Form.Label htmlFor="confirmPassword">
-                        {t("placeholders.confirmPassword")}
+                        {t('placeholders.confirmPassword')}
                       </Form.Label>
                       <Form.Control.Feedback type="invalid">
-                        {formik.errors.confirmPassword || t("errors.userExist")}
+                        {formik.errors.confirmPassword || t('errors.userExist')}
                       </Form.Control.Feedback>
                     </Form.Floating>
                     <div className="d-grid">
@@ -166,7 +163,7 @@ const SignUp = () => {
                         variant="outline-primary"
                         className="mb-4"
                       >
-                        {t("register")}
+                        {t('register')}
                       </Button>
                     </div>
                   </fieldset>

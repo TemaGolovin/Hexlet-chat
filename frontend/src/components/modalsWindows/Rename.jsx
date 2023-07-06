@@ -1,15 +1,14 @@
-import React from "react";
-import { Modal, Form, Button } from "react-bootstrap";
-import { useFormik } from "formik";
-import { addChannelSchema } from "../../schemas/schemas";
-import { selectors as channelsSelectors } from "../../store/slices/channelsSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
-import { useSocket } from "../../hooks";
-import { actions as modalsActions } from "../../store/slices/modalsSlice";
-import { useEffect, useRef } from "react";
-import { toast } from "react-toastify";
-import { useRollbar } from "@rollbar/react";
+import React, { useEffect, useRef } from 'react';
+import { Modal, Form, Button } from 'react-bootstrap';
+import { useFormik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import { useRollbar } from '@rollbar/react';
+import { addChannelSchema } from '../../schemas/schemas';
+import { selectors as channelsSelectors } from '../../store/slices/channelsSlice';
+import { useSocket } from '../../hooks';
+import { actions as modalsActions } from '../../store/slices/modalsSlice';
 
 const Rename = () => {
   const channels = useSelector(channelsSelectors.selectChannelsNames);
@@ -19,9 +18,7 @@ const Rename = () => {
   const socket = useSocket();
   const dispatch = useDispatch();
   const inputRef = useRef(null);
-  const channelName = useSelector((state) =>
-    channelsSelectors.selectById(state, targetId)
-  ).name;
+  const channelName = useSelector((state) => channelsSelectors.selectById(state, targetId)).name;
   const rollbar = useRollbar();
 
   useEffect(() => {
@@ -36,17 +33,17 @@ const Rename = () => {
     },
     validationSchema: addChannelSchema(
       channels,
-      t("modal.unique"),
-      t("modal.lengthChannelName")
+      t('modal.unique'),
+      t('modal.lengthChannelName'),
     ),
     onSubmit: async ({ body }) => {
       try {
         await socket.renameChannel({ id: targetId, name: body });
         dispatch(modalsActions.close());
-        toast.success(t("success.renameChannel"));
+        toast.success(t('success.renameChannel'));
       } catch (error) {
-        toast.error(t("errors.channelRename"));
-        rollbar.error("renameChannel", error);
+        toast.error(t('errors.channelRename'));
+        rollbar.error('renameChannel', error);
       }
     },
   });
@@ -57,14 +54,14 @@ const Rename = () => {
   return (
     <Modal show={isOpened} onHide={handleClose}>
       <Modal.Header>
-        <Modal.Title>{t("modal.rename")}</Modal.Title>
+        <Modal.Title>{t('modal.rename')}</Modal.Title>
         <Button
           type="button"
           className="btn-close"
           aria-label="Close"
           onClick={handleClose}
           data-bs-dismiss="modal"
-        ></Button>
+        />
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
@@ -81,21 +78,21 @@ const Rename = () => {
               value={formik.values.body}
             />
             <Form.Label visuallyHidden htmlFor="body">
-              {t("modal.channelName")}
+              {t('modal.channelName')}
             </Form.Label>
             <Form.Control.Feedback type="invalid">
               {formik.errors.body}
             </Form.Control.Feedback>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
-                {t("cancel")}
+                {t('cancel')}
               </Button>
               <Button
                 type="submit"
                 variant="primary"
                 disabled={formik.isSubmitting}
               >
-                {t("send")}
+                {t('send')}
               </Button>
             </Modal.Footer>
           </Form.Group>

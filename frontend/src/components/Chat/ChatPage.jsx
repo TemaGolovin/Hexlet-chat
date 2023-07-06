@@ -1,20 +1,19 @@
-import React /*useEffect useRef,*/ from "react";
-import { Container, Row } from "react-bootstrap";
-import ChatBox from "./ChatBox.jsx";
-import getModalComponent from "../modalsWindows/index.js";
+import React, { useEffect, useMemo } from 'react';
+import { Container, Row } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import ChatBox from './ChatBox.jsx';
+import getModalComponent from '../modalsWindows/index.js';
 
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useMemo } from "react";
-import fetchDataThunk from "../../store/slices/thunk";
-import { useAuth, useSocket } from "../../hooks";
-import { selectors as modalsSelectors } from "../../store/slices/modalsSlice";
+import fetchDataThunk from '../../store/slices/thunk';
+import { useAuth, useSocket } from '../../hooks';
+import { selectors as modalsSelectors } from '../../store/slices/modalsSlice';
 
 const ChatPage = () => {
   const dispatch = useDispatch();
   const { getAuthHeader } = useAuth();
   const authHeaders = useMemo(
     () => ({ headers: getAuthHeader() }),
-    [getAuthHeader]
+    [getAuthHeader],
   );
   const socket = useSocket();
   const modalType = useSelector(modalsSelectors.selectModalType);

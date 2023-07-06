@@ -1,9 +1,14 @@
-import { Button, ButtonGroup, Dropdown, Nav } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { actions as channelsActions } from "../../../store/slices/channelsSlice.js";
-import { actions as modalsActions } from "../../../store/slices/modalsSlice.js";
-import { useWordFilter } from "../../../hooks";
+import {
+  Button,
+  ButtonGroup,
+  Dropdown,
+  Nav,
+} from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import { actions as channelsActions } from '../../../store/slices/channelsSlice.js';
+import { actions as modalsActions } from '../../../store/slices/modalsSlice.js';
+import { useWordFilter } from '../../../hooks';
 
 const Channel = ({ isActive, channel }) => {
   const { t } = useTranslation();
@@ -16,11 +21,11 @@ const Channel = ({ isActive, channel }) => {
   };
 
   const hendlerRename = () => {
-    dispatch(modalsActions.open({ type: "renaming", targetId: channel.id }));
+    dispatch(modalsActions.open({ type: 'renaming', targetId: channel.id }));
   };
 
   const hendlerRemove = () => {
-    dispatch(modalsActions.open({ type: "removing", targetId: channel.id }));
+    dispatch(modalsActions.open({ type: 'removing', targetId: channel.id }));
   };
 
   return (
@@ -29,37 +34,39 @@ const Channel = ({ isActive, channel }) => {
         <Dropdown as={ButtonGroup} className="d-flex">
           <Button
             className="w-100 rounded-0 text-start text-truncate"
-            variant={isActive ? "secondary" : null}
+            variant={isActive ? 'secondary' : null}
             onClick={switchHandler}
           >
-            <span>#</span> {channelName}
+            <span>#</span>
+            {channelName}
           </Button>
 
           <Dropdown.Toggle
             split
-            variant={isActive ? "secondary" : null}
+            variant={isActive ? 'secondary' : null}
             className="flex-grow-0"
             id="dropdown-split-basic"
           >
-            <span className="visually-hidden">{t("modal.toggle")}</span>
+            <span className="visually-hidden">{t('modal.toggle')}</span>
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
             <Dropdown.Item onClick={hendlerRename}>
-              {t("modal.rename")}
+              {t('modal.rename')}
             </Dropdown.Item>
             <Dropdown.Item onClick={hendlerRemove}>
-              {t("modal.remove")}
+              {t('modal.remove')}
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       ) : (
         <Button
           className="w-100 rounded-0 text-start"
-          variant={isActive ? "secondary" : null}
+          variant={isActive ? 'secondary' : null}
           onClick={switchHandler}
         >
-          <span>#</span> {channelName}
+          <span>#</span>
+          {channelName}
         </Button>
       )}
     </Nav.Item>

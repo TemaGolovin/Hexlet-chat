@@ -1,15 +1,14 @@
-import React from "react";
-import { Modal, Form, Button } from "react-bootstrap";
-import { useFormik } from "formik";
-import { addChannelSchema } from "../../schemas/schemas";
-import { selectors as channelsSelectors } from "../../store/slices/channelsSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
-import { useSocket } from "../../hooks";
-import { actions as modalsActions } from "../../store/slices/modalsSlice";
-import { useEffect, useRef } from "react";
-import { toast } from "react-toastify";
-import { useRollbar } from "@rollbar/react";
+import React, { useEffect, useRef } from 'react';
+import { Modal, Form, Button } from 'react-bootstrap';
+import { useFormik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import { useRollbar } from '@rollbar/react';
+import { addChannelSchema } from '../../schemas/schemas';
+import { selectors as channelsSelectors } from '../../store/slices/channelsSlice';
+import { useSocket } from '../../hooks';
+import { actions as modalsActions } from '../../store/slices/modalsSlice';
 
 const Add = () => {
   const channels = useSelector(channelsSelectors.selectChannelsNames);
@@ -28,21 +27,21 @@ const Add = () => {
 
   const formik = useFormik({
     initialValues: {
-      body: "",
+      body: '',
     },
     validationSchema: addChannelSchema(
       channels,
-      t("modal.unique"),
-      t("modal.lengthChannelName")
+      t('modal.unique'),
+      t('modal.lengthChannelName'),
     ),
     onSubmit: async ({ body }) => {
       try {
         await socket.addChannel({ name: body });
         dispatch(modalsActions.close());
-        toast.success(t("success.newChannel"));
+        toast.success(t('success.newChannel'));
       } catch (error) {
-        toast.error(t("errors.channelAdd"));
-        rollbar.error("AddChannel", error);
+        toast.error(t('errors.channelAdd'));
+        rollbar.error('AddChannel', error);
       }
     },
   });
@@ -53,14 +52,14 @@ const Add = () => {
   return (
     <Modal show={isOpened} onHide={handleClose}>
       <Modal.Header>
-        <Modal.Title>{t("modal.add")}</Modal.Title>
+        <Modal.Title>{t('modal.add')}</Modal.Title>
         <Button
           type="button"
           className="btn-close"
           aria-label="Close"
           onClick={handleClose}
           data-bs-dismiss="modal"
-        ></Button>
+        />
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
@@ -68,7 +67,7 @@ const Add = () => {
             <Form.Control
               required
               type="text"
-              placeholder={t("modal.channelName")}
+              placeholder={t('modal.channelName')}
               ref={inputRef}
               id="body"
               name="body"
@@ -78,21 +77,21 @@ const Add = () => {
               value={formik.values.body}
             />
             <Form.Label visuallyHidden htmlFor="body">
-              {t("modal.channelName")}
+              {t('modal.channelName')}
             </Form.Label>
             <Form.Control.Feedback type="invalid">
               {formik.errors.body}
             </Form.Control.Feedback>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
-                {t("cancel")}
+                {t('cancel')}
               </Button>
               <Button
                 type="submit"
                 variant="primary"
                 disabled={formik.isSubmitting}
               >
-                {t("send")}
+                {t('send')}
               </Button>
             </Modal.Footer>
           </Form.Group>

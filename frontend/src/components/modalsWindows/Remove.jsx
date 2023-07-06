@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
-import { useSocket } from "../../hooks";
-import { actions as modalsActions } from "../../store/slices/modalsSlice";
-import { toast } from "react-toastify";
-import { useRollbar } from "@rollbar/react";
+import React, { useState } from 'react';
+import { Modal, Button, Form } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import { useRollbar } from '@rollbar/react';
+import { useSocket } from '../../hooks';
+import { actions as modalsActions } from '../../store/slices/modalsSlice';
 
 const Remove = () => {
   const { isOpened, targetId } = useSelector((state) => state.modals);
@@ -23,11 +23,11 @@ const Remove = () => {
     try {
       await socket.removeChannel(targetId);
       dispatch(modalsActions.close());
-      toast.success(t("success.removeChannel"));
+      toast.success(t('success.removeChannel'));
       setIsSubmitting(false);
     } catch (error) {
-      toast.error(t("errors.channelRemove"));
-      rollbar.error("renameChannel", error);
+      toast.error(t('errors.channelRemove'));
+      rollbar.error('renameChannel', error);
       setIsSubmitting(false);
     }
   };
@@ -35,11 +35,11 @@ const Remove = () => {
   return (
     <Modal show={isOpened} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>{t("modal.removeChannel")}</Modal.Title>
+        <Modal.Title>{t('modal.removeChannel')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
-        <Modal.Title>{t("modal.confirm")}</Modal.Title>
+        <Modal.Title>{t('modal.confirm')}</Modal.Title>
         <Modal.Footer>
           <Form onSubmit={hendleRemove}>
             <Form.Group>
@@ -48,10 +48,10 @@ const Remove = () => {
                 variant="secondary"
                 onClick={handleClose}
               >
-                {t("cancel")}
+                {t('cancel')}
               </Button>
               <Button type="submit" variant="danger" disabled={isSubmitting}>
-                {t("modal.remove")}
+                {t('modal.remove')}
               </Button>
             </Form.Group>
           </Form>

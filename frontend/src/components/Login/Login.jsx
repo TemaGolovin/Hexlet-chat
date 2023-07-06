@@ -1,15 +1,10 @@
-import { Formik } from "formik";
-import { SigninSchema } from "../../schemas/schemas.js";
-import React, { useEffect, useRef, useState } from "react";
-import imgSrc from "./img.js";
-import { apiRoutes, appPaths } from "../../routes.js";
-import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
-import { useTranslation } from "react-i18next";
-import { useAuth } from "../../hooks";
-import { toast } from "react-toastify";
-import { useRollbar } from "@rollbar/react";
-
+import { Formik } from 'formik';
+import { useNavigate, Link } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useRollbar } from '@rollbar/react';
 import {
   Container,
   Form,
@@ -18,7 +13,12 @@ import {
   Col,
   Button,
   Image,
-} from "react-bootstrap";
+} from 'react-bootstrap';
+
+import { SigninSchema } from '../../schemas/schemas.js';
+import imgSrc from './img.js';
+import { apiRoutes, appPaths } from '../../routes.js';
+import { useAuth } from '../../hooks';
 
 const Login = () => {
   const [authFailed, setAuthFailed] = useState(false);
@@ -39,11 +39,11 @@ const Login = () => {
         if (err.response.status === 401) {
           setAuthFailed(true);
         }
-        if (err.code === "ERR_NETWORK") {
-          toast.error(t("errors.network"));
+        if (err.code === 'ERR_NETWORK') {
+          toast.error(t('errors.network'));
         }
       }
-      rollbar.error("Login", err);
+      rollbar.error('Login', err);
       throw err;
     }
   };
@@ -63,8 +63,8 @@ const Login = () => {
               </Col>
               <Col className="col-form">
                 <Formik
-                  initialValues={{ username: "", password: "" }}
-                  validationSchema={SigninSchema(t("errors.required"))}
+                  initialValues={{ username: '', password: '' }}
+                  validationSchema={SigninSchema(t('errors.required'))}
                   className="w-100"
                   onSubmit={onSubmit}
                 >
@@ -75,17 +75,14 @@ const Login = () => {
                     handleChange,
                     handleSubmit,
                   }) => {
-                    const isInvalidUsername =
-                      touched.username && errors.username;
-                    const isInvalidPassword =
-                      touched.password && errors.password;
-
+                    const isInvalidUsername = touched.username && errors.username;
+                    const isInvalidPassword = touched.password && errors.password;
                     return (
                       <Form
                         onSubmit={handleSubmit}
                         className="col-12 col-md-11 mt-3 mt-mb-0"
                       >
-                        <h1>{t("entry")}</h1>
+                        <h1>{t('entry')}</h1>
                         <Form.Floating md="11" className="mb-2">
                           <Form.Control
                             required
@@ -95,11 +92,11 @@ const Login = () => {
                             onChange={handleChange}
                             isInvalid={authFailed || isInvalidUsername}
                             id="username"
-                            placeholder={t("placeholders.yourNickname")}
+                            placeholder={t('placeholders.yourNickname')}
                             ref={ref}
                           />
                           <Form.Label htmlFor="username">
-                            {t("placeholders.yourNickname")}
+                            {t('placeholders.yourNickname')}
                           </Form.Label>
                           {isInvalidUsername ? (
                             <Form.Control.Feedback type="invalid">
@@ -116,10 +113,10 @@ const Login = () => {
                             onChange={handleChange}
                             isInvalid={authFailed || isInvalidPassword}
                             id="password"
-                            placeholder={t("placeholders.password")}
+                            placeholder={t('placeholders.password')}
                           />
                           <Form.Label htmlFor="password">
-                            {t("placeholders.password")}
+                            {t('placeholders.password')}
                           </Form.Label>
                           {isInvalidPassword ? (
                             <Form.Control.Feedback type="invalid">
@@ -128,7 +125,7 @@ const Login = () => {
                           ) : null}
                           {authFailed ? (
                             <Form.Control.Feedback type="invalid">
-                              {t("invalidFeedback")}
+                              {t('invalidFeedback')}
                             </Form.Control.Feedback>
                           ) : null}
                         </Form.Floating>
@@ -138,7 +135,7 @@ const Login = () => {
                             className="Login-button mt-3"
                             type="submit"
                           >
-                            {t("entry")}
+                            {t('entry')}
                           </Button>
                         </div>
                       </Form>
@@ -148,9 +145,10 @@ const Login = () => {
               </Col>
             </Row>
             <Card.Footer className="p-4">
-              {t("noAccount")}{" "}
+              {t('noAccount')}
+              {' '}
               <Link to={appPaths.signUp} className="footer-link">
-                {t("makeRegistration")}
+                {t('makeRegistration')}
               </Link>
             </Card.Footer>
           </Card>

@@ -1,13 +1,13 @@
-import ChannelsBox from "./Channels/ChannelsBox";
-import MessagesBox from "./Messages/MessagesBox";
-import { useSelector } from "react-redux";
-import Loading from "./Loading";
-import Error from "./Error";
+import { useSelector } from 'react-redux';
+import ChannelsBox from './Channels/ChannelsBox';
+import MessagesBox from './Messages/MessagesBox';
+import Loading from './Loading';
+import Error from './Error';
 
 const statuses = {
-  loading: "loading",
-  loaded: "loaded",
-  loadError: "loadError",
+  loading: 'loading',
+  loaded: 'loaded',
+  loadError: 'loadError',
 };
 
 const ChatBox = () => {
