@@ -1,5 +1,6 @@
 import { Container, Navbar, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { appPaths } from '../../routes';
 import { useAuth } from '../../hooks';
 
@@ -10,7 +11,7 @@ const Header = () => {
   return (
     <Navbar bg="white" className="shadow-sm">
       <Container>
-        <Navbar.Brand href={appPaths.chat}>{t('name')}</Navbar.Brand>
+        <Navbar.Brand as={Link} to={appPaths.chat}>{t('name')}</Navbar.Brand>
         {auth.user ? (
           <Button
             href={appPaths.login}
