@@ -107,6 +107,7 @@ const SignUp = () => {
                         isValid={
                           formik.touched.username && !formik.errors.username
                         }
+                        onBlur={formik.handleBlur}
                       />
                       <Form.Label htmlFor="name">
                         {t('placeholders.username')}
@@ -128,6 +129,7 @@ const SignUp = () => {
                         isValid={
                           formik.touched.password && !formik.errors.password
                         }
+                        onBlur={formik.handleBlur}
                       />
                       <Form.Label htmlFor="password">
                         {t('placeholders.password')}
@@ -149,6 +151,7 @@ const SignUp = () => {
                         isValid={
                           formik.touched.confirmPassword && !formik.errors.confirmPassword
                         }
+                        onBlur={formik.handleBlur}
                       />
                       <Form.Label htmlFor="confirmPassword">
                         {t('placeholders.confirmPassword')}

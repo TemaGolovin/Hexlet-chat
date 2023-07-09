@@ -74,6 +74,7 @@ const Login = () => {
                     values,
                     handleChange,
                     handleSubmit,
+                    handleBlur,
                   }) => {
                     const isInvalidUsername = touched.username && errors.username;
                     const isInvalidPassword = touched.password && errors.password;
@@ -94,6 +95,7 @@ const Login = () => {
                             id="username"
                             placeholder={t('placeholders.yourNickname')}
                             ref={ref}
+                            onBlur={handleBlur}
                           />
                           <Form.Label htmlFor="username">
                             {t('placeholders.yourNickname')}
@@ -114,6 +116,7 @@ const Login = () => {
                             isInvalid={authFailed || isInvalidPassword}
                             id="password"
                             placeholder={t('placeholders.password')}
+                            onBlur={handleBlur}
                           />
                           <Form.Label htmlFor="password">
                             {t('placeholders.password')}
