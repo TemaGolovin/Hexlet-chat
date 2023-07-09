@@ -21,11 +21,11 @@ const DefaultRoute = ({ children }) => {
 
 const App = () => (
   <div className="d-flex flex-column h-100">
-    <Header />
     <ToastContainer />
     <BrowserRouter>
+      <Header />
       <Routes>
-        <Route path={appPaths.notFound} element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
         <Route path={appPaths.login} element={<Login />} />
         <Route path={appPaths.signUp} element={<SignUp />} />
         <Route
