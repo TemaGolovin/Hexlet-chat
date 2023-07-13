@@ -1,8 +1,9 @@
 import { Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { useWordFilter } from '../../../hooks';
+import { useRef, useEffect } from 'react';
 
+import { useWordFilter } from '../../../hooks';
 import Messages from './Messages.jsx';
 import MessageInput from './MessageInput.jsx';
 
@@ -15,6 +16,11 @@ const MessagesBox = () => {
   const currentMessages = useSelector(messagesSelectors.selectById);
   const filterProfanity = useWordFilter();
   const channelName = filterProfanity(currentChannel?.name);
+  const messagesRef = useRef(null);
+
+  useEffect(() => {
+    messagesRef.current.scrollTo(0, messagesRef.current.scrollHeight);
+  });
 
   return (
     <Col className="p-0 h-100">
@@ -30,7 +36,7 @@ const MessagesBox = () => {
             {t('messagesCounter.messages', { count: currentMessages.length })}
           </span>
         </div>
-        <div className="chat-messages overflow-auto px-5">
+        <div className="chat-messages overflow-auto px-5" ref={messagesRef}>
           {currentMessages.map((message) => (
             <Messages key={message.id} message={message} />
           ))}
