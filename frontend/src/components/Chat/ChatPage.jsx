@@ -27,7 +27,7 @@ const ChatPage = () => {
     }
 
     return () => socket.disconnectSocket();
-  }, [dispatch, socket, authHeaders, error]);
+  }, [dispatch, socket, authHeaders, error, logOut]);
 
   return (
     <Container className="h-100 my-4 overflow-hidden rounded shadow">
