@@ -2,6 +2,7 @@ import { Col, Nav } from 'react-bootstrap';
 import { PlusSquareFill } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
+import { useRef, useEffect } from 'react';
 import { selectors as channelsSelectors } from '../../../store/slices/channelsSlice';
 import { actions as modalsActions } from '../../../store/slices/modalsSlice.js';
 import Channel from './Channel.jsx';
@@ -17,6 +18,11 @@ const ChannelsBox = () => {
   const handleAddChannel = () => {
     dispatch(modalsActions.open({ type: 'adding', targetId: null }));
   };
+  const channelRef = useRef(null);
+
+  useEffect(() => {
+    channelRef.current.scrollTo(0, channelRef.current.scrollHeight);
+  });
 
   return (
     <Col className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
@@ -34,6 +40,7 @@ const ChannelsBox = () => {
       <Nav
         variant="pills"
         className="flex-column nav-fill px-2 mb-3 overflow-auto h-100 d-block"
+        ref={channelRef}
       >
         {channels.map((channel) => (
           <Channel
