@@ -1,5 +1,5 @@
 export default {
-  accessToken: '83b090102ccb46c58b3c57bf3a4fb1b0',
+  accessToken: process.env.REACT_APP_ACCESS_TOKEN_ROLLBAR,
   captureUncaught: true,
   captureUnhandledRejections: true,
   environment: 'production',
