@@ -10,8 +10,6 @@ import ChatPage from './components/Chat/ChatPage.jsx';
 import { appPaths } from './routes.js';
 import { useAuth } from './hooks';
 import Header from './components/Header/Header.jsx';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'react-toastify/dist/ReactToastify.css';
 
 const DefaultRoute = ({ children }) => {
   const auth = useAuth();
@@ -24,7 +22,6 @@ const App = () => (
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route path="*" element={<NotFound />} />
         <Route path={appPaths.login} element={<Login />} />
         <Route path={appPaths.signUp} element={<SignUp />} />
         <Route
@@ -35,6 +32,7 @@ const App = () => (
             </DefaultRoute>
             )}
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   </div>
