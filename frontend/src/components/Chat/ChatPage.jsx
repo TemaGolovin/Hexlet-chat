@@ -10,19 +10,24 @@ import { selectors as modalsSelectors } from '../../store/slices/modalsSlice';
 
 const ChatPage = () => {
   const dispatch = useDispatch();
-  const { getAuthHeader } = useAuth();
+  const { getToken, logOut } = useAuth();
   const authHeaders = useMemo(
-    () => ({ headers: getAuthHeader() }),
-    [getAuthHeader],
+    () => ({ headers: { Authorization: `Bearer ${getToken()}` } }),
+    [getToken],
   );
   const socket = useSocket();
   const modalType = useSelector(modalsSelectors.selectModalType);
+  const error = useSelector((state) => state.channels.error);
 
   useEffect(() => {
     dispatch(fetchDataThunk(authHeaders));
     socket.connectSocket();
+    if (error?.errorCode === 500) {
+      logOut();
+    }
+
     return () => socket.disconnectSocket();
-  }, [dispatch, socket, authHeaders]);
+  }, [dispatch, socket, authHeaders, error]);
 
   return (
     <Container className="h-100 my-4 overflow-hidden rounded shadow">
