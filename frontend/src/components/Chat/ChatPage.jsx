@@ -7,6 +7,8 @@ import getModalComponent from '../modalsWindows/index.js';
 import fetchDataThunk from '../../store/slices/thunk';
 import { useAuth, useSocket } from '../../hooks';
 import { selectors as modalsSelectors } from '../../store/slices/modalsSlice';
+import { actions as channelsActions } from '../../store/slices/channelsSlice.js';
+import { actions as messagesActions } from '../../store/slices/messagesSlice.js';
 
 const ChatPage = () => {
   const dispatch = useDispatch();
@@ -15,19 +17,41 @@ const ChatPage = () => {
     () => ({ headers: { Authorization: `Bearer ${getToken()}` } }),
     [getToken],
   );
-  const socket = useSocket();
+  const socketConstext = useSocket();
   const modalType = useSelector(modalsSelectors.selectModalType);
   const error = useSelector((state) => state.channels.error);
 
   useEffect(() => {
     dispatch(fetchDataThunk(authHeaders));
-    socket.connectSocket();
     if (error?.errorCode === 500) {
       logOut();
     }
 
-    return () => socket.disconnectSocket();
-  }, [dispatch, socket, authHeaders, error, logOut]);
+    return () => socketConstext.disconnectSocket();
+  }, [dispatch, socketConstext, authHeaders, error, logOut]);
+
+  const { socket } = socketConstext;
+
+  socket.on('newMessage', (message) => {
+    dispatch(messagesActions.addMessage(message));
+  });
+
+  socket.on('newChannel', (channel) => {
+    dispatch(channelsActions.addChannel(channel));
+  });
+
+  socket.on('removeChannel', (data) => {
+    dispatch(channelsActions.removeChannel(data.id));
+  });
+
+  socket.on('renameChannel', (channel) => {
+    dispatch(
+      channelsActions.renameChannel({
+        id: channel.id,
+        changes: { name: channel.name },
+      }),
+    );
+  });
 
   return (
     <Container className="h-100 my-4 overflow-hidden rounded shadow">
