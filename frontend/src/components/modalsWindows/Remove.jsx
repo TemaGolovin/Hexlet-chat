@@ -11,7 +11,7 @@ const Remove = () => {
   const { isOpened, targetId } = useSelector((state) => state.modals);
   const rollbar = useRollbar();
   const { t } = useTranslation();
-  const socket = useSocket();
+  const chatApi = useSocket();
   const dispatch = useDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -21,7 +21,7 @@ const Remove = () => {
     event.preventDefault();
     setIsSubmitting(true);
     try {
-      await socket.removeChannel(targetId);
+      await chatApi.removeChannel({ id: targetId });
       dispatch(modalsActions.close());
       toast.success(t('success.removeChannel'));
       setIsSubmitting(false);

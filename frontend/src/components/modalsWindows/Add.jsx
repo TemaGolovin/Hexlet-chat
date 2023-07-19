@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useRollbar } from '@rollbar/react';
 import { addChannelSchema } from '../../schemas/schemas';
-import { selectors as channelsSelectors } from '../../store/slices/channelsSlice';
+import { selectors as channelsSelectors, actions as channelsActions } from '../../store/slices/channelsSlice';
 import { useSocket } from '../../hooks';
 import { actions as modalsActions } from '../../store/slices/modalsSlice';
 
@@ -14,7 +14,7 @@ const Add = () => {
   const channels = useSelector(channelsSelectors.selectChannelsNames);
   const isOpened = useSelector((state) => state.modals.isOpened);
   const { t } = useTranslation();
-  const socket = useSocket();
+  const chatApi = useSocket();
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const rollbar = useRollbar();
@@ -36,8 +36,9 @@ const Add = () => {
     ),
     onSubmit: async ({ body }) => {
       try {
-        await socket.addChannel({ name: body });
+        const data = await chatApi.addChannel({ name: body });
         dispatch(modalsActions.close());
+        dispatch(channelsActions.switchChannel({ id: data.id }));
         toast.success(t('success.newChannel'));
       } catch (error) {
         toast.error(t('errors.channelAdd'));

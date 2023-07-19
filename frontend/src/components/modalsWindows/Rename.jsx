@@ -15,7 +15,7 @@ const Rename = () => {
   const isOpened = useSelector((state) => state.modals.isOpened);
   const targetId = useSelector((state) => state.modals.targetId);
   const { t } = useTranslation();
-  const socket = useSocket();
+  const chatApi = useSocket();
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const channelName = useSelector((state) => channelsSelectors.selectById(state, targetId)).name;
@@ -38,7 +38,7 @@ const Rename = () => {
     ),
     onSubmit: async ({ body }) => {
       try {
-        await socket.renameChannel({ id: targetId, name: body });
+        await chatApi.renameChannel({ id: targetId, name: body });
         dispatch(modalsActions.close());
         toast.success(t('success.renameChannel'));
       } catch (error) {
