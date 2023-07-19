@@ -8,11 +8,10 @@ import { actions as channelsActions } from '../store/slices/channelsSlice';
 const SocketProvider = ({ socket, children }) => {
   const dispatch = useDispatch();
 
-  const connectSocket = useCallback(() => {
+  const connectSocket = () => {
     socket.connect();
 
     socket.on('newMessage', (message) => {
-      console.log(message);
       dispatch(messagesActions.addMessage(message));
     });
 
@@ -20,8 +19,8 @@ const SocketProvider = ({ socket, children }) => {
       dispatch(channelsActions.addChannel(channel));
     });
 
-    socket.on('removeChannel', ({ id }) => {
-      dispatch(channelsActions.removeChannel(id));
+    socket.on('removeChannel', (data) => {
+      dispatch(channelsActions.removeChannel(data.id));
     });
 
     socket.on('renameChannel', (channel) => {
@@ -32,7 +31,7 @@ const SocketProvider = ({ socket, children }) => {
         }),
       );
     });
-  }, [dispatch, socket]);
+  };
 
   const disconnectSocket = useCallback(() => {
     socket.disconnect();
@@ -45,33 +44,21 @@ const SocketProvider = ({ socket, children }) => {
     [socket],
   );
 
-  const addChannel = useCallback(
-    async (channel) => {
-      const { data } = await socket
-        .timeout(3000)
-        .emitWithAck('newChannel', channel);
+  const asyncronizeSocket = (fn) => (...args) => new Promise((resolve, reject) => {
+    setTimeout(() => {
+      reject();
+    }, 3000);
 
-      dispatch(channelsActions.addChannel(data));
-      dispatch(channelsActions.switchChannel({ id: data.id }));
-    },
-    [socket, dispatch],
-  );
+    fn(...args, (response) => {
+      resolve(response.data);
+    });
+  });
 
-  const removeChannel = useCallback(
-    async (targetId) => {
-      await socket.timeout(3000).emitWithAck('removeChannel', { id: targetId });
-    },
-    [socket],
-  );
+  const addChannel = asyncronizeSocket((...args) => socket.volatile.emit('newChannel', ...args));
 
-  const renameChannel = useCallback(
-    async (updateChannelInfo) => {
-      await socket
-        .timeout(3000)
-        .emitWithAck('renameChannel', updateChannelInfo);
-    },
-    [socket],
-  );
+  const removeChannel = asyncronizeSocket((...args) => socket.volatile.emit('removeChannel', ...args));
+
+  const renameChannel = asyncronizeSocket((...args) => socket.volatile.emit('renameChannel', ...args));
 
   const socketContext = useMemo(
     () => ({
