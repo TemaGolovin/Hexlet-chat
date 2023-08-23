@@ -52,4 +52,4 @@ Notifications about user actions, filtering obscene words and expressions are us
 
 ## Demo
 
-[Сlick to go to chat](https://frontend-project-12-production-d3e2.up.railway.app/)
+[Сlick to go to chat](https://chat-z3yg.onrender.com)
